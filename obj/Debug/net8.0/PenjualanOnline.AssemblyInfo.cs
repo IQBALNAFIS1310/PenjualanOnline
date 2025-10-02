@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PenjualanOnline")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35a61a4ea2dc5de52aa4d41e3b6232dbbccb2cc3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ef8d0424d532b15daaf502110662cbcd0bd3940")]
 [assembly: System.Reflection.AssemblyProductAttribute("PenjualanOnline")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PenjualanOnline")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
