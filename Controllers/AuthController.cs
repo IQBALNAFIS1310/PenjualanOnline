@@ -1,7 +1,10 @@
-﻿using System;
+﻿using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PenjualanOnline.Data;
 using PenjualanOnline.Models;
 
@@ -17,10 +20,7 @@ namespace PenjualanOnline.Controllers
         }
 
         // GET: /Auth/Register
-        public IActionResult Register()
-        {
-            return View();
-        }
+        public IActionResult Register() => View();
 
         // POST: /Auth/Register
         [HttpPost]
@@ -28,9 +28,9 @@ namespace PenjualanOnline.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Hash password sebelum simpan
                 account.Password = HashPassword(account.Password);
                 account.Id = Guid.NewGuid();
+                account.Role = "user";
 
                 _context.Accounts.Add(account);
                 _context.SaveChanges();
@@ -40,24 +40,40 @@ namespace PenjualanOnline.Controllers
         }
 
         // GET: /Auth/Login
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
 
         // POST: /Auth/Login
         [HttpPost]
-        public IActionResult Login(string email, string password)
+        public async Task<IActionResult> Login(string email, string password, bool rememberMe)
         {
-            var hashed = HashPassword(password);
-            var user = _context.Accounts.FirstOrDefault(a => a.Email == email && a.Password == hashed);
+            var hashedPassword = HashPassword(password);
+            var user = await _context.Accounts.FirstOrDefaultAsync(a => a.Email == email && a.Password == hashedPassword);
 
             if (user != null)
             {
-                HttpContext.Session.SetString("UserId", user.Id.ToString());
-                HttpContext.Session.SetString("UserEmail", user.Email);
-                HttpContext.Session.SetString("Role", user.Role);
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role)
+                };
 
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = rememberMe,
+                    ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+                if (user.Role == "admin")
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
                 return RedirectToAction("Index", "Home");
             }
 
@@ -65,9 +81,9 @@ namespace PenjualanOnline.Controllers
             return View();
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }
 

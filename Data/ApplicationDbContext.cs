@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PenjualanOnline.Models; // ganti sesuai namespace project kamu
+using PenjualanOnline.Models;
 
 namespace PenjualanOnline.Data
 {
@@ -7,7 +7,9 @@ namespace PenjualanOnline.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Product> Products { get; set; }
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+
     }
 }

@@ -12,8 +12,8 @@ using PenjualanOnline.Data;
 namespace PenjualanOnline.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251002091232_app")]
-    partial class app
+    [Migration("20251002180826_stup-dtas")]
+    partial class stupdtas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

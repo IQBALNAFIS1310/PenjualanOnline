@@ -1,0 +1,56 @@
+﻿@model IEnumerable<PenjualanOnline.Models.Cart>
+@{
+    ViewData["Title"] = "Keranjang Belanja";
+}
+
+<h2>Keranjang Belanja</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+@if (!Model.Any())
+{
+    <p>Keranjang kosong.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Produk</th>
+                <th>Harga</th>
+                <th>Jumlah</th>
+                <th>Total</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Product.Price.ToString("C")</td>
+                    <td>
+                        <form asp-action="Update" method="post" style="display:inline-block;">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control" style="width:70px;display:inline;" />
+                            <button type="submit" class="btn btn-sm btn-warning">Update</button>
+                        </form>
+                    </td>
+                    <td>@((item.Product.Price * item.Quantity).ToString("C"))</td>
+                    <td>
+                        <form asp-action="Remove" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Total: @Model.Sum(x => x.Product.Price * x.Quantity).ToString("C")</h4>
+    <a asp-controller="Order" asp-action="Checkout" class="btn btn-success">Checkout</a>
+}

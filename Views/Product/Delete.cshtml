@@ -1,0 +1,23 @@
+﻿@model PenjualanOnline.Models.Product
+@{
+    ViewData["Title"] = "Hapus Produk";
+}
+
+<h2>Hapus Produk</h2>
+
+<h4>Apakah Anda yakin ingin menghapus produk ini?</h4>
+
+<dl class="row">
+    <dt class="col-sm-2">Nama</dt>
+    <dd class="col-sm-10">@Model.Name</dd>
+
+    <dt class="col-sm-2">Harga</dt>
+    <dd class="col-sm-10">@Model.Price.ToString("C")</dd>
+</dl>
+
+<form asp-action="Delete">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    <button type="submit" class="btn btn-danger">Hapus</button>
+    <a asp-action="Index" class="btn btn-secondary">Batal</a>
+</form>

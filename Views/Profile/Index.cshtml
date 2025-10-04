@@ -1,0 +1,41 @@
+﻿@model PenjualanOnline.Models.Account
+@{
+    ViewData["Title"] = "Profil";
+}
+
+<h2>Profil</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<dl class="row">
+    <dt class="col-sm-2">Email</dt>
+    <dd class="col-sm-10">@Model.Email</dd>
+
+    <dt class="col-sm-2">Nama</dt>
+    <dd class="col-sm-10">@Model.Name</dd>
+
+    <dt class="col-sm-2">Alamat</dt>
+    <dd class="col-sm-10">@Model.Address</dd>
+
+    <dt class="col-sm-2">Telepon</dt>
+    <dd class="col-sm-10">@Model.Phone</dd>
+
+    <dt class="col-sm-2">Role</dt>
+    <dd class="col-sm-10">@Model.Role</dd>
+</dl>
+
+<a asp-action="Edit" asp-controller="Profile" class="btn btn-primary">Edit Profil</a>
+
+@if (Model.Role == "user")
+{
+    <form asp-action="BecomeSeller" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-success">Ajukan Jadi Penjual</button>
+    </form>
+}

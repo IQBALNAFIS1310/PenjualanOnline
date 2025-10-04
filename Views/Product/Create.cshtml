@@ -1,0 +1,32 @@
+﻿@model PenjualanOnline.Models.Product
+@{
+    ViewData["Title"] = "Tambah Produk";
+}
+
+<h2>Tambah Produk</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Stock" class="form-label"></label>
+        <input asp-for="Stock" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="PhotoUrl" class="form-label"></label>
+        <input asp-for="PhotoUrl" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success">Simpan</button>
+    <a asp-action="Index" class="btn btn-secondary">Batal</a>
+</form>

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PenjualanOnline.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class stupdtas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

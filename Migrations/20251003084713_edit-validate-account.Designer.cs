@@ -12,8 +12,8 @@ using PenjualanOnline.Data;
 namespace PenjualanOnline.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251002090951_initial")]
-    partial class initial
+    [Migration("20251003084713_edit-validate-account")]
+    partial class editvalidateaccount
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,14 +32,16 @@ namespace PenjualanOnline.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Address")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Password")
                         .IsRequired()

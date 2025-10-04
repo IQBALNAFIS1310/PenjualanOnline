@@ -1,31 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using PenjualanOnline.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseUrls("http://basic-3.alstore.space:25576");
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// ✅ Tambahkan DBContext
+// Tambah DBContext (pakai MySQL)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 36)) // sesuaikan MySQL versinya
+        new MySqlServerVersion(new Version(8, 0, 36))
     )
 );
 
-// ✅ Tambahkan Session
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // auto logout setelah 30 menit idle
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
+// Tambah Identity Authentication pakai Cookie
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Auth/Login";
+        options.LogoutPath = "/Auth/Logout";
+        options.AccessDeniedPath = "/Auth/Login";
+        options.ExpireTimeSpan = TimeSpan.FromDays(30);
+        options.SlidingExpiration = true;
+    });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -37,9 +39,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// ✅ Aktifkan session sebelum authorization
-app.UseSession();
-
+// urutan penting
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

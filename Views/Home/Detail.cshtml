@@ -1,0 +1,24 @@
+﻿@model PenjualanOnline.Models.Product
+@{
+    ViewData["Title"] = "Detail Produk";
+}
+
+<div class="card" style="max-width: 600px; margin: auto;">
+    <img src="@Model.PhotoUrl" class="card-img-top" alt="@Model.Name"
+         onerror="this.src='/images/noimage.png';" style="height: 300px; object-fit: cover;">
+    <div class="card-body">
+        <h3 class="card-title">@Model.Name</h3>
+        <p class="card-text">@Model.Description</p>
+        <p class="card-text"><strong>Harga:</strong> @Model.Price.ToString("C")</p>
+        <p class="card-text"><strong>Stok:</strong> @Model.Stock</p>
+
+        <a asp-action="Index" class="btn btn-secondary">Kembali</a>
+        <a href="#" class="btn btn-primary">Beli</a>
+        <form asp-controller="Cart" asp-action="Add" method="post">
+            <input type="hidden" name="productId" value="@Model.Id" />
+            <input type="number" name="quantity" value="1" min="1" class="form-control" style="width:100px;" />
+            <button type="submit" class="btn btn-success mt-2">Tambah ke Keranjang</button>
+        </form>
+
+    </div>
+</div>

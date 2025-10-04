@@ -1,22 +1,25 @@
 ﻿@{
-    ViewData["Title"] = "Login";
+    ViewBag.Title = "Login";
 }
-
 <h2>Login</h2>
 
 <form asp-action="Login" method="post">
     <div class="mb-3">
         <label>Email</label>
-        <input name="email" type="email" class="form-control" />
+        <input type="email" name="email" class="form-control" required />
     </div>
     <div class="mb-3">
         <label>Password</label>
-        <input name="password" type="password" class="form-control" />
+        <input type="password" name="password" class="form-control" required />
     </div>
-    <button type="submit" class="btn btn-success">Login</button>
+    <div class="form-check mb-3">
+        <input type="checkbox" name="rememberMe" class="form-check-input" />
+        <label class="form-check-label">Ingat saya</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
 </form>
 
 @if (ViewBag.Error != null)
 {
-    <div class="alert alert-danger mt-2">@ViewBag.Error</div>
+    <div class="text-danger">@ViewBag.Error</div>
 }
