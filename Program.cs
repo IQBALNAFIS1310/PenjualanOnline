@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using PenjualanOnline.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://basic-3.alstore.space:25576");
 
 builder.Services.AddControllersWithViews();
 
